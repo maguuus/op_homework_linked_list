@@ -1,5 +1,3 @@
-using System;
-
 namespace Program
 {
     /// <summary>
@@ -27,7 +25,7 @@ namespace Program
             }
         }
 
-        private Node? head;
+        private Node? _head;
 
         /// <summary>
         /// Добавить элемент в конец списка.
@@ -36,7 +34,20 @@ namespace Program
         /// </summary>
         public void Add(T item)
         {
-            throw new NotImplementedException("implement me");
+            Node newNode = new Node(item);
+            if (_head == null)
+            {
+                _head = newNode;
+            }
+            else
+            {
+                Node current = _head;
+                while (current.Next != null)
+                {
+                    current = current.Next;
+                }
+                current.Next = newNode;
+            }
         }
 
         /// <summary>
@@ -46,7 +57,29 @@ namespace Program
         /// </summary>
         public bool Remove(T item)
         {
-            throw new NotImplementedException("implement me");
+            if (_head == null)
+            {
+                return false;
+            }
+            
+            if (Equals(_head.Value, item))
+            {
+                _head = _head.Next;
+                return true;
+            }
+            
+            Node? current =  _head;
+            while (current.Next != null)
+            {
+                if (Equals(current.Next.Value, item))
+                {
+                    current.Next = current.Next.Next;
+                    return true;
+                }
+                current = current.Next;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -56,7 +89,19 @@ namespace Program
         /// </summary>
         public T Get(int index)
         {
-            throw new NotImplementedException("implement me");
+            if (index < 0) 
+                throw new ArgumentOutOfRangeException();
+            Node? current = _head;
+            int currentIndex = 0;
+            while (current != null)
+            {
+                if (currentIndex == index)
+                    return current.Value;
+                
+                current = current.Next;
+                currentIndex++;
+            }
+            throw new ArgumentOutOfRangeException();
         }
 
         /// <summary>
@@ -66,7 +111,14 @@ namespace Program
         /// </summary>
         public int Count()
         {
-            throw new NotImplementedException("implement me");
+            int count = 0;
+            Node? current = _head;
+            while (current != null)
+            {
+                count++;
+                current = current.Next;
+            }
+            return count;
         }
 
         /// <summary>
@@ -75,7 +127,12 @@ namespace Program
         /// </summary>
         public void Clear()
         {
-            throw new NotImplementedException("implement me");
+            _head = null;
+        }
+
+        private static bool Equals(T x, T y)
+        {
+            return EqualityComparer<T>.Default.Equals(x, y);
         }
     }
 }
